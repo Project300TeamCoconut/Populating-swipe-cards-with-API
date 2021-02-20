@@ -33,14 +33,17 @@ import java.util.ListResourceBundle;
 public class MainActivity extends AppCompatActivity {
 
     private ArrayList<String> al;
-    private ArrayAdapter<MovieModelClass> arrayAdapter;
-    private ArrayList<MovieModelClass> movieList = new ArrayList<>();
+    private MyAdapter adapter;
+    private ArrayAdapter<String> arrayAdapter;
+    private ArrayList<String> movieList = new ArrayList<>();
     private int i;
     String moviename = "";
     Context context;
 
+    //I declared fling container up here instead
 
-    SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
+    SwipeFlingAdapterView flingContainer;
+
 
 
     private static String JSON_URL = "https://api.themoviedb.org/3/movie/popular?api_key=8099f5720bad1f61f020fdbc855f73db";
@@ -52,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
 
 
 
@@ -186,13 +191,15 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(s);
                 JSONArray jsonArray = jsonObject.getJSONArray("results");
 
+
+                movieList = new ArrayList<>();
+
+                MovieModelClass model = new MovieModelClass();
+
                 for(int i = 0; i< jsonArray.length(); i++) {
                     JSONObject jsonObject1 = jsonArray.getJSONObject(i);
 
 
-                    MovieModelClass model = new MovieModelClass();
-
-                    movieList = new ArrayList<>();
                     //  model.setId(jsonObject1.getString("vote_average"));
                     //   model.setName(jsonObject1.getString("title"));
                     //  model.setImg(jsonObject1.getString("poster_path"));
@@ -200,22 +207,35 @@ public class MainActivity extends AppCompatActivity {
 
                     moviename = jsonObject1.getString("title");
                     model.setName(moviename);
-                    movieList.add(model);
-
-
-                    arrayAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.item, R.id.helloText, movieList);
-
-                    flingContainer.setAdapter(arrayAdapter);
-
-                    arrayAdapter.notifyDataSetChanged();
+                    movieList.add(moviename);
 
 
                 }
+
+                //adapter = new MyAdapter(MainActivity.this, R.layout.item, movieList);
+
+
+
+               arrayAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.item, R.id.helloText, movieList);
+
+
+                flingContainer.setAdapter(arrayAdapter);
+
+
+                arrayAdapter.notifyDataSetChanged();
+
+
+
 
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+
+
+
+
 
 
 

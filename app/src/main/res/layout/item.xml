@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:background="#E339"
         android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@android:color/white"
         android:textSize="40sp"
         tools:text="hello" />
