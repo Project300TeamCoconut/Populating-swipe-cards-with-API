@@ -14,43 +14,63 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MyAdapter extends ArrayAdapter<MovieModelClass> {
-    private Context mContext;
+public class MyAdapter extends ArrayAdapter {
+    /*private Context mContext;
     private int mResource;
-    private ArrayList<MovieModelClass> mData;
+    private ArrayList<MovieModelClass> mData;*/
 
-    public MyAdapter(@NonNull Context context, int resource, ArrayList<MovieModelClass> objects) {
-        super(context, resource);
-        mContext = context;
+  //  private List<MovieModelClass> mData;
+
+  //  private Context mContext;
+
+
+    public MyAdapter(Context context, int resource, ArrayList<MovieModelClass> objects) {
+        super(context, resource, objects);
+        //this.mContext = context;
+       // this.mData = objects;
+       /* mContext = context;
         mResource = resource;
-        mData = objects;
+        mData = objects;*/
     }
 
-    @Override
+    /*@Override
     public int getCount() {
         return mData.size();
-    }
+    }*/
 
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        String name = mData.get(position).getName();
+
+       MovieModelClass movies = (MovieModelClass) getItem(position);
+
+       if(convertView == null)
+       {
+           convertView = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
+       }
+
+
+       TextView name = (TextView) convertView.findViewById(R.id.name);
+
+       name.setText(movies.getName());
+
+       return convertView ;
+
+       // String name = mData.get(position).getName();
        /* String color = mNotes.get(position).getColor();
         String location = mNotes.get(position).getLocation();
         String reminder = mNotes.get(position).getReminder();
         String image = mNotes.get(position).getImage();*/
 
 
-        MovieModelClass model = new MovieModelClass(name);
+       // MovieModelClass model = new MovieModelClass(name);
 
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        convertView = inflater.inflate(mResource, parent, false);
+     //   LayoutInflater inflater = LayoutInflater.from(mContext);
+     //   convertView = inflater.inflate(mResource, parent, false);
 
 
-        TextView txt = convertView.findViewById(R.id.helloText);
+       // txt.setText(name);
 
-        txt.setText(name);
-
-        return convertView;
+     //   return convertView;
 
 
     }

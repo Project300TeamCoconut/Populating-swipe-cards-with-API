@@ -32,15 +32,17 @@ import java.util.ListResourceBundle;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<String> al;
+ //   private ArrayList<String> al;
     private MyAdapter adapter;
-    private ArrayAdapter<String> arrayAdapter;
-    private ArrayList<String> movieList = new ArrayList<>();
+  // private ArrayAdapter<String> arrayAdapter;
+    private ArrayList<MovieModelClass> movieList = new ArrayList<>();
     private int i;
     String moviename = "";
     Context context;
 
     //I declared fling container up here instead
+
+
 
     SwipeFlingAdapterView flingContainer;
 
@@ -56,7 +58,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
+
+
+
         flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
+
+
+
 
 
 
@@ -88,9 +98,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
-              //  Log.d("LIST", "removed object!");
-              //  movieList.remove(0);
-              //  arrayAdapter.notifyDataSetChanged();
+              Log.d("LIST", "removed object!");
+               movieList.remove(0);
+              adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -124,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         });
-
 
         // Optionally add an OnItemClickListener
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
@@ -185,59 +194,46 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(@org.jetbrains.annotations.NotNull String s){
 
-
+            movieList = new ArrayList<>();
 
             try{
                 JSONObject jsonObject = new JSONObject(s);
                 JSONArray jsonArray = jsonObject.getJSONArray("results");
 
 
-                movieList = new ArrayList<>();
-
                 MovieModelClass model = new MovieModelClass();
 
                 for(int i = 0; i< jsonArray.length(); i++) {
                     JSONObject jsonObject1 = jsonArray.getJSONObject(i);
 
-
                     //  model.setId(jsonObject1.getString("vote_average"));
-                    //   model.setName(jsonObject1.getString("title"));
+                     model.setName(jsonObject1.getString("title"));
                     //  model.setImg(jsonObject1.getString("poster_path"));
 
 
-                    moviename = jsonObject1.getString("title");
-                    model.setName(moviename);
-                    movieList.add(moviename);
+                  //  moviename = jsonObject1.getString("title");
+                 //   model.setName(moviename);
+
+                    movieList.add(model);
+
 
 
                 }
 
-                //adapter = new MyAdapter(MainActivity.this, R.layout.item, movieList);
+
+
+              // arrayAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.item, R.id.helloText, movieList);
 
 
 
-               arrayAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.item, R.id.helloText, movieList);
-
-
-                flingContainer.setAdapter(arrayAdapter);
-
-
-                arrayAdapter.notifyDataSetChanged();
-
-
-
+                adapter = new MyAdapter(MainActivity.this, R.layout.item, movieList);
+                flingContainer.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
 
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-
-
-
-
-
-
 
 
         }
@@ -248,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void AddArray() {
 
-        al = new ArrayList<>();
+      /* al = new ArrayList<>();
         al.add("php");
         al.add("c");
         al.add("python");
@@ -256,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
         al.add("html");
         al.add("c++");
         al.add("css");
-        al.add("javascript");
+        al.add("javascript");*/
 
     }
 }
