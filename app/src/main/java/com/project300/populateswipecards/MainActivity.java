@@ -31,22 +31,13 @@ import java.util.List;
 import java.util.ListResourceBundle;
 
 public class MainActivity extends AppCompatActivity {
-
- //   private ArrayList<String> al;
     private MyAdapter adapter;
-  // private ArrayAdapter<String> arrayAdapter;
     private ArrayList<MovieModelClass> movieList = new ArrayList<>();
     private int i;
     String moviename = "";
     Context context;
 
-    //I declared fling container up here instead
-
-
-
     SwipeFlingAdapterView flingContainer;
-
-
 
     private static String JSON_URL = "https://api.themoviedb.org/3/movie/popular?api_key=8099f5720bad1f61f020fdbc855f73db";
     //List<MovieModelClass> movieList;
@@ -59,37 +50,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
-
-
-
         flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
-
-
-
-
-
 
         GetData getData = new GetData();
         getData.execute();
 
-
-
-
         //AddArray();
 
         // ButterKnife.inject(this);
-
-        //this add is the name of the card, with each add another card is added
-        //adds into array
-        //the array has a text and a layout we create
-        //this layout is the card in itself textview picture ect...
-
-
-
-        //this is when it actually swipes(clicks and movies)
-
-
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
 
 
@@ -104,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onLeftCardExit(Object dataObject) {
+           public void onLeftCardExit(Object dataObject) {
                 //Do something on the left!
                 //You also have access to the original object.
                 //If you want to use it just cast it (String) dataObject
@@ -116,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "right", Toast.LENGTH_SHORT).show();
             }
 
-            @Override
+           @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
                 // Ask for more data here
                // movieList.add();
@@ -192,19 +160,23 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(@org.jetbrains.annotations.NotNull String s){
+        protected void onPostExecute(String s){
 
-            movieList = new ArrayList<>();
 
             try{
                 JSONObject jsonObject = new JSONObject(s);
                 JSONArray jsonArray = jsonObject.getJSONArray("results");
 
 
-                MovieModelClass model = new MovieModelClass();
+
+
+
+                movieList = new ArrayList<>();
 
                 for(int i = 0; i< jsonArray.length(); i++) {
                     JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+
+                    MovieModelClass model = new MovieModelClass();
 
                     //  model.setId(jsonObject1.getString("vote_average"));
                      model.setName(jsonObject1.getString("title"));
@@ -215,16 +187,9 @@ public class MainActivity extends AppCompatActivity {
                  //   model.setName(moviename);
 
                     movieList.add(model);
-
-
-
                 }
 
-
-
               // arrayAdapter = new ArrayAdapter<>(MainActivity.this, R.layout.item, R.id.helloText, movieList);
-
-
 
                 adapter = new MyAdapter(MainActivity.this, R.layout.item, movieList);
                 flingContainer.setAdapter(adapter);
